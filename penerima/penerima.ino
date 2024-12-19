@@ -95,7 +95,7 @@ void loop() {
       return;
     }
 
-    // Menambahkan timestamp ke JSON
+
     FirebaseJson json;
     String formattedTime = getFormattedTime();
     json.setJsonData(jsonData);
@@ -110,6 +110,7 @@ void loop() {
       Serial.println(fbdo.errorReason());
     }
   }
+
 
   delay(3000); // Interval pendek untuk loop
 }
