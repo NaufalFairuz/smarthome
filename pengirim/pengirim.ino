@@ -3,7 +3,7 @@
 #include <SoftwareSerial.h>
 #include <Servo.h>
 
-// Konfigurasi pin
+
 #define LDR_PIN A0
 #define GAS_PIN A1
 #define DHT_PIN 2
