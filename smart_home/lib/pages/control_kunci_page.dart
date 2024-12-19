@@ -11,7 +11,8 @@ class ControlKunciPage extends StatefulWidget {
   _ControlKunciPageState createState() => _ControlKunciPageState();
 }
 
-class _ControlKunciPageState extends State<ControlKunciPage> with TickerProviderStateMixin {
+class _ControlKunciPageState extends State<ControlKunciPage>
+    with TickerProviderStateMixin {
   bool _isLocked = true;
   late AnimationController _controller;
   late Animation<double> _offsetAnimation;
@@ -35,10 +36,10 @@ class _ControlKunciPageState extends State<ControlKunciPage> with TickerProvider
 
   Future<void> _toggleLock(bool value) async {
     setState(() {
-      _isLoading = true; // Tampilkan indikator loading
+      _isLoading = true;
     });
 
-    final command = value ? 'kunci/close' : 'kunci/open'; // Tentukan perintah yang dikirim
+    final command = value ? 'kunci/close' : 'kunci/open';
     final success = await widget.espService.sendCommand(command);
 
     if (success) {
@@ -46,18 +47,16 @@ class _ControlKunciPageState extends State<ControlKunciPage> with TickerProvider
         _isLocked = value;
         _isLoading = false;
 
-        // Jalankan animasi
         if (_isLocked) {
-          _controller.reverse(); // Kunci tertutup
+          _controller.reverse();
         } else {
-          _controller.forward(); // Kunci terbuka
+          _controller.forward();
         }
       });
     } else {
       setState(() {
         _isLoading = false;
       });
-      // Tampilkan pesan kesalahan
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Gagal mengirim perintah ke kunci')),
       );
@@ -74,25 +73,67 @@ class _ControlKunciPageState extends State<ControlKunciPage> with TickerProvider
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AnimatedBuilder(
-              animation: _controller,
-              builder: (context, child) {
-                return Transform.translate(
-                  offset: Offset(_offsetAnimation.value, 0),
-                  child: Icon(
-                    _isLocked ? Icons.lock : Icons.lock_open,
-                    size: 100,
-                    color: Colors.blue,
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: 150,
+                  height: 150,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.blueAccent.withOpacity(0.3),
+                        Colors.blueAccent.withOpacity(0.7),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                   ),
-                );
-              },
+                ),
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform.translate(
+                      offset: Offset(_offsetAnimation.value, 0),
+                      child: Icon(
+                        _isLocked ? Icons.lock : Icons.lock_open,
+                        size: 80,
+                        color: _isLocked ? Colors.red : Colors.green,
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
-            SwitchListTile(
-              title: Text('Kunci/Buka Rumah'),
-              value: _isLocked,
-              onChanged: _isLoading ? null : _toggleLock, // Nonaktifkan saat loading
+            SizedBox(height: 20),
+            GestureDetector(
+              onTap: _isLoading ? null : () => _toggleLock(!_isLocked),
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                decoration: BoxDecoration(
+                  color: _isLocked ? Colors.redAccent : Colors.greenAccent,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Text(
+                  _isLocked ? 'Kunci Rumah' : 'Buka Rumah',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
-            if (_isLoading) CircularProgressIndicator(), // Tampilkan loading indicator
+            SizedBox(height: 20),
+            if (_isLoading) CircularProgressIndicator(),
           ],
         ),
       ),
