@@ -3,7 +3,7 @@ import 'dart:async';
 
 class EspService {
   final String baseUrl;
-  static const int _timeoutDuration = 15; // Durasi timeout dalam detik
+  static const int _timeoutDuration = 10; // Durasi timeout dalam detik
 
   // Konstruktor menerima base URL ESP8266
   EspService(String baseUrl)
