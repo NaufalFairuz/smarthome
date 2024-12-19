@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 class AuthServices {
   final String databaseURL = "https://smarthome-efa61-default-rtdb.firebaseio.com/";
 
-  // Fungsi untuk menghapus akun berdasarkan userId
+  // Fungsi untuk menghapus akun berdasarkan userId namun tidak jadi
   Future<void> deleteUser(String userId) async {
     if (userId.isEmpty) {
       print("Error: userId is empty");
