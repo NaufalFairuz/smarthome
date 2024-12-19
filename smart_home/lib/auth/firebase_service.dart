@@ -12,7 +12,7 @@ class FirebaseService {
         url,
         body: json.encode({
           'email': email,
-          'password': password, // Simpan password
+          'password': password, // Simpan password di firebase
           'timestamp': DateTime.now().toIso8601String(),
         }),
       );
