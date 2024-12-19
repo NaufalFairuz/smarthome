@@ -1,0 +1,41 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "smarthome-efa61",
+          "appId": "1:3049101719:android:d535ff7ade05b4c1980cd2",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "smarthome-efa61",
+          "configurations": {
+            "android": "1:3049101719:android:d535ff7ade05b4c1980cd2",
+            "ios": "1:3049101719:ios:c7bfa7ba9ce7c516980cd2",
+            "macos": "1:3049101719:ios:c7bfa7ba9ce7c516980cd2",
+            "web": "1:3049101719:web:0cc7141e6f7f356b980cd2",
+            "windows": "1:3049101719:web:57658ee444c134ab980cd2"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint"
+      ]
+    }
+  ]
+}
