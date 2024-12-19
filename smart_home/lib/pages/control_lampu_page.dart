@@ -15,14 +15,9 @@ class _ControlLampuPageState extends State<ControlLampuPage> {
   bool _lampu2On = false;
   double _brightnessLampu1 = 0.5;
   double _brightnessLampu2 = 0.5;
-  bool _isLoading = false; // State untuk loading
 
   // Fungsi untuk menyalakan semua lampu
   void _turnOnAllLights() async {
-    setState(() {
-      _isLoading = true;
-    });
-
     try {
       await Future.wait([
         widget.espService.sendCommand('lampu1?value=255'),
@@ -36,19 +31,11 @@ class _ControlLampuPageState extends State<ControlLampuPage> {
       });
     } catch (e) {
       _showErrorSnackBar('Gagal menyalakan semua lampu: $e');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
   // Fungsi untuk mematikan semua lampu
   void _turnOffAllLights() async {
-    setState(() {
-      _isLoading = true;
-    });
-
     try {
       await Future.wait([
         widget.espService.sendCommand('lampu1?value=0'),
@@ -62,10 +49,6 @@ class _ControlLampuPageState extends State<ControlLampuPage> {
       });
     } catch (e) {
       _showErrorSnackBar('Gagal mematikan semua lampu: $e');
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
@@ -92,11 +75,6 @@ class _ControlLampuPageState extends State<ControlLampuPage> {
               lampuOn: _lampu1On,
               brightness: _brightnessLampu1,
               onToggle: (value) async {
-                if (_isLoading) return; // Mencegah interaksi saat loading
-                setState(() {
-                  _isLoading = true;
-                });
-
                 try {
                   if (value) {
                     await widget.espService.sendCommand('lampu1?value=255');
@@ -108,18 +86,9 @@ class _ControlLampuPageState extends State<ControlLampuPage> {
                   });
                 } catch (e) {
                   _showErrorSnackBar('Gagal mengubah status Lampu 1: $e');
-                } finally {
-                  setState(() {
-                    _isLoading = false;
-                  });
                 }
               },
               onBrightnessChange: (value) async {
-                if (_isLoading) return; // Mencegah interaksi saat loading
-                setState(() {
-                  _isLoading = true;
-                });
-
                 try {
                   int brightnessValue = (value * 255).toInt();
                   await widget.espService.sendCommand('lampu1?value=$brightnessValue');
@@ -128,10 +97,6 @@ class _ControlLampuPageState extends State<ControlLampuPage> {
                   });
                 } catch (e) {
                   _showErrorSnackBar('Gagal mengubah kecerahan Lampu 1: $e');
-                } finally {
-                  setState(() {
-                    _isLoading = false;
-                  });
                 }
               },
               title: 'Lampu 1',
@@ -143,11 +108,6 @@ class _ControlLampuPageState extends State<ControlLampuPage> {
               lampuOn: _lampu2On,
               brightness: _brightnessLampu2,
               onToggle: (value) async {
-                if (_isLoading) return; // Mencegah interaksi saat loading
-                setState(() {
-                  _isLoading = true;
-                });
-
                 try {
                   if (value) {
                     await widget.espService.sendCommand('lampu2?value=255');
@@ -159,18 +119,9 @@ class _ControlLampuPageState extends State<ControlLampuPage> {
                   });
                 } catch (e) {
                   _showErrorSnackBar('Gagal mengubah status Lampu 2: $e');
-                } finally {
-                  setState(() {
-                    _isLoading = false;
-                  });
                 }
               },
               onBrightnessChange: (value) async {
-                if (_isLoading) return; // Mencegah interaksi saat loading
-                setState(() {
-                  _isLoading = true;
-                });
-
                 try {
                   int brightnessValue = (value * 255).toInt();
                   await widget.espService.sendCommand('lampu2?value=$brightnessValue');
@@ -179,10 +130,6 @@ class _ControlLampuPageState extends State<ControlLampuPage> {
                   });
                 } catch (e) {
                   _showErrorSnackBar('Gagal mengubah kecerahan Lampu 2: $e');
-                } finally {
-                  setState(() {
-                    _isLoading = false;
-                  });
                 }
               },
               title: 'Lampu 2',
@@ -194,18 +141,14 @@ class _ControlLampuPageState extends State<ControlLampuPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 ElevatedButton(
-                  onPressed: _isLoading ? null : _turnOnAllLights,
-                  child: _isLoading
-                      ? CircularProgressIndicator(color: Colors.white)
-                      : Text('Nyalakan Semua Lampu'),
+                  onPressed: _turnOnAllLights,
+                  child: Text('Nyalakan Semua Lampu'),
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                 ),
                 SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: _isLoading ? null : _turnOffAllLights,
-                  child: _isLoading
-                      ? CircularProgressIndicator(color: Colors.white)
-                      : Text('Matikan Semua Lampu'),
+                  onPressed: _turnOffAllLights,
+                  child: Text('Matikan Semua Lampu'),
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                 ),
               ],
