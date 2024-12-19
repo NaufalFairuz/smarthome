@@ -4,7 +4,7 @@ import 'package:smart_home/pages/esp_service.dart'; // Pastikan path ke esp_serv
 class ControlGerbangPage extends StatefulWidget {
   final EspService espService;
 
-  // Constructor menerima espService
+  // Constructor menerima espService dari request
   ControlGerbangPage({required this.espService});
 
   @override
