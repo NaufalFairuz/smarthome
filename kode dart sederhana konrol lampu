@@ -1,0 +1,22 @@
+import 'package:http/http.dart' as http;
+
+void controlLED(String ip, String state) async {
+  final url = Uri.parse('http://$ip/led?state=$state');
+  try {
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      print('Response: ${response.body}');
+    } else {
+      print('Failed to control LED. Status: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error: $e');
+  }
+}
+
+// Panggil fungsi dengan IP ESP dan state (on/off)
+void main() {
+  String ipESP = '192.168.1.100'; // Ganti dengan IP ESP
+  controlLED(ipESP, 'on'); // Nyalakan LED
+  controlLED(ipESP, 'off'); // Matikan LED
+}
